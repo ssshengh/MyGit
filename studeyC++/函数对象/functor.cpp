@@ -11,7 +11,7 @@
  * 二元函数：用两个参数就能调用的函数符    返回bool是二元谓词
 */
 
-
+//如果是已有一个接受两个参数的模板函数 bool TooBig(const T & val , const T & lim)可以向下面一样定义调用这个模板函数
 
 template<class T>
 class TooBig
@@ -21,6 +21,7 @@ private:
 public:
     TooBig(const T & t) : cutOff(t){}
     bool operator()(const T & v ) {return v > cutOff;}  //定义()运算符允许我们像使用函数一样的使用对象，这个就叫做函数对象
+    //bool operator()(const T & v) { return TooBig<T>(v , cutOff);}
     ~TooBig() {std::cout << "Bye ~~~" <<'\n';}
 };
 
