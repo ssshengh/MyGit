@@ -1,4 +1,5 @@
 package binaryHeap;
+import java.io.*;
 /*
 *结质:
 *堆其实就是一颗被完全填满的二叉树，底层上的元素被从左向右填入，这样的树称为完全二叉树
@@ -55,13 +56,66 @@ public class BinaryHeap <AnyType extends Comparable<? super AnyType>>{
         array[ hole ] = x;
     }
 
+    /**
+     * 删除最小元
+     * 找到最小元是简单的，因为总是在根节点
+     * 但是删除困难，因为需要将其他元素冒上去，而且需要把最下面的右节点提出来在合适的地方插入（完全二叉树）
+     * 步骤：先变成一个空穴，然后把较小子节点移上去，重复.实际操作是，将最后一个元素放到根，然后一直往下冒下去
+     * 如果堆中存在偶数个元素，那么将遇到一个结点只有一个儿子的情况，巧妙的办法是，始终保证算法把每一个节点都看为两个儿子
+     * @param hole : the index at which the percolate begins
+     * */
+    private void percolateDown(int hole){
+        int child;
+        AnyType tmp = array[hole];
 
+        for (; hole * 2 <= currentSize ; hole = child)
+        {
+            child = hole*2;
+            if (child != currentSize && array[child+1] .compareTo(array[child]) < 0)
+                child++;
+            //每一次都只考虑三个节点的子树
+            if (array[child] . compareTo(tmp) < 0)
+                array[hole] = array[child];//
+            else
+                break;
+        }
+        array[hole] = tmp;
+    }
+    public  AnyType deleteMin(){
+        if(isEmpty())
+            throw new NoClassDefFoundError();
+        AnyType minItem = findMin();
+        array[1] = array[currentSize--];
+        percolateDown(1);
+        return minItem;
+    }
+
+    public void makeEmpty( )
+    {
+        currentSize = 0;
+    }
+
+
+    public AnyType findMin( )
+    {
+        if( isEmpty( ) )
+            throw new NoClassDefFoundError();
+        return array[ 1 ];
+    }
 
 
     private void buildHeap(){
-
+        for( int i = currentSize / 2; i > 0; i-- )
+            percolateDown( i );
     }
     private void enlargeArray( int newSize){
-
+        AnyType [] old = array;
+        array = (AnyType []) new Comparable[ newSize ];
+        for( int i = 0; i < old.length; i++ )
+            array[ i ] = old[ i ];
     }
+    private boolean isEmpty(){
+        return currentSize==0;
+    }
+
 }
