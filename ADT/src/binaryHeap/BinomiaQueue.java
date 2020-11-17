@@ -121,7 +121,7 @@ public class BinomiaQueue <AnyType extends Comparable<? super AnyType>>{
     public AnyType findMin(){
         if(isEmpty())
             throw new BufferUnderflowException();
-
+        return TheTrees[ findMinIndex( ) ].element;
     }
 
 
@@ -139,7 +139,7 @@ public class BinomiaQueue <AnyType extends Comparable<? super AnyType>>{
 
         for (minIndex = i ; minIndex<TheTrees.length ; i++)
             if( TheTrees[ i ] != null &&
-                    TheTrees[ i ].element.compareTo( theTrees[ minIndex ].element ) < 0 )
+                    TheTrees[ i ].element.compareTo( TheTrees[ minIndex ].element ) < 0 )
                 minIndex = i;
         return minIndex;
     }
@@ -160,19 +160,19 @@ public class BinomiaQueue <AnyType extends Comparable<? super AnyType>>{
         BinNode<AnyType> deletedTree = TheTrees[ minIndex ].leftChild;
 
         // Construct H''
-        BinomialQueue<AnyType> deletedQueue = new BinomialQueue<>( );
+        BinomiaQueue<AnyType> deletedQueue = new BinomiaQueue<>( );
         deletedQueue.expandTheTrees( minIndex );
 
         deletedQueue.currentSize = ( 1 << minIndex ) - 1;
         for( int j = minIndex - 1; j >= 0; j-- )
         {
-            deletedQueue.theTrees[ j ] = deletedTree;
+            deletedQueue.TheTrees[ j ] = deletedTree;
             deletedTree = deletedTree.nextSibling;
-            deletedQueue.theTrees[ j ].nextSibling = null;
+            deletedQueue.TheTrees[ j ].nextSibling = null;
         }
 
         // Construct H'
-        theTrees[ minIndex ] = null;
+        TheTrees[ minIndex ] = null;
         currentSize -= deletedQueue.currentSize + 1;
 
         merge( deletedQueue );
