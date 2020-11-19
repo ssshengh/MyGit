@@ -11,9 +11,10 @@ public final class Sort {
      * 插入排序-1趟排序组成，基本思想是，第i趟排序，就把第i个元素与前面的元素进行比较，放在合适的位置，
      * 注意这里使用了一个非三次赋值的换序方法，空穴
      * @param a : the array to sort
-     * */
+     * @param left
+     * @param right*/
     public static <AnyType extends Comparable<? super AnyType>>
-    void insertingSort(AnyType [] a){
+    void insertingSort(AnyType[] a, int left, int right){
         AnyType tmp;
         int j;
         for (int i = 0 ; i < a.length ; i++){
@@ -23,6 +24,30 @@ public final class Sort {
             a[j] = tmp;
         }
     }
+
+    /**
+     * Internal insertion sort routine for subarrays
+     * that is used by quicksort.
+     * @param a an array of Comparable items.
+     * @param left the left-most index of the subarray.
+     * @param right the right-most index of the subarray.
+     */
+    private static <AnyType extends Comparable<? super AnyType>>
+    void insertionSort( AnyType [ ] a, int left, int right )
+    {
+        for( int p = left + 1; p <= right; p++ )
+        {
+            AnyType tmp = a[ p ];
+            int j;
+
+            for( j = p; j > left && tmp.compareTo( a[ j - 1 ] ) < 0; j-- )
+                a[ j ] = a[ j - 1 ];
+            a[ j ] = tmp;
+        }
+    }
+
+
+
     /**
      * 希尔排序，一种典型的多趟排序算法，冲破了二次时间障，因为不再是相邻元素之间进行排序了
      * 该方法使用的是流行的增量序列：Length/2 ， length/2/2
